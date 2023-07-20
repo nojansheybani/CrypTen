@@ -2321,6 +2321,24 @@ class ReLU(Module):
     def from_onnx(attributes=None):
         return ReLU()
 
+class PReLU(Module):
+    r"""
+    Module that computes Parametric rectified linear unit (PReLU) activations element-wise.
+
+    """
+
+    def __init__(self, inplace=False):
+        super().__init__()
+        if inplace:
+            logging.warning("CrypTen ReLU module does not support inplace computation.")
+
+    def forward(self, x, slope):
+        return x.relu() + slope * (x - abs(x)) * 0.5
+
+    @staticmethod
+    def from_onnx(attributes=None):
+        return PReLU()
+
 
 class Hardtanh(Module):
     r"""Applies the Hardtanh function element-wise

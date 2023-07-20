@@ -156,6 +156,7 @@ ONNX_TO_CRYPTEN = {
     "MaxPool": module.MaxPool2d,
     "Pad": module._ConstantPad,
     "Relu": module.ReLU,
+    "PRelu": module.PReLU,
     "ReduceMean": module.Mean,
     "ReduceSum": module.Sum,
 }
