@@ -2328,16 +2328,16 @@ class PReLU(Module):
 
     """
 
-    def __init__(self, init_alpha=0.25):
-        super(PReLU, self).__init__()
-        self.alpha = init_alpha
+    # def __init__(self, init_alpha=0.25):
+    #     super().__init__()
+    #     self.alpha = init_alpha
 
     def forward(self, input):
-        # Compute PReLU activation element-wise using CrypTen operations
-        # pos = nn.ReLU(input)
-        # neg = (input - list(map(abs, input))) * 0.5 * self.alpha
-        # output = pos + neg
-        return input
+        # print(input)
+        pos = input[0].relu()
+        neg = (input[0] - input[0].abs()) * 0.5 * input[1]
+        output = pos + neg
+        return output
 
     @staticmethod
     def from_onnx(attributes=None):

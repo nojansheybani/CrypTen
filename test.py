@@ -19,6 +19,7 @@ torch_model = convert(onnx_model_path)
 @mpc.run_multiprocess(world_size=2)
 def run():
     dummy_input = torch.empty(1, 3, 112, 112)
+    print(torch_model)
     private_model = crypten.nn.from_pytorch(torch_model, dummy_input)
     private_model.encrypt(src=ALICE)
     print("Model successfully encrypted:", private_model.encrypted)
