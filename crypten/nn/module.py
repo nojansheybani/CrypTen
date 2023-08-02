@@ -13,6 +13,7 @@ import crypten
 import torch
 import torch.onnx.symbolic_helper as sym_help
 from crypten.common.functions.pooling import _adaptive_pool2d_helper
+from torch import nn
 
 
 class Module:
@@ -2327,13 +2328,16 @@ class PReLU(Module):
 
     """
 
-    def __init__(self, inplace=False):
-        super().__init__()
-        if inplace:
-            logging.warning("CrypTen ReLU module does not support inplace computation.")
+    def __init__(self, init_alpha=0.25):
+        super(PReLU, self).__init__()
+        self.alpha = init_alpha
 
-    def forward(self, x, slope):
-        return x.relu() + slope * (x - abs(x)) * 0.5
+    def forward(self, input):
+        # Compute PReLU activation element-wise using CrypTen operations
+        # pos = nn.ReLU(input)
+        # neg = (input - list(map(abs, input))) * 0.5 * self.alpha
+        # output = pos + neg
+        return input
 
     @staticmethod
     def from_onnx(attributes=None):

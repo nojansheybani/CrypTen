@@ -49,6 +49,7 @@ class RestrictedUnpickler(pickle.Unpickler):
         "torch.nn.modules.activation.LogSigmoid",
         "torch.nn.modules.activation.LogSoftmax",
         "torch.nn.modules.activation.ReLU",
+        "torch.nn.modules.activation.PReLU",
         "torch.nn.modules.activation.Sigmoid",
         "torch.nn.modules.activation.Softmax",
         "torch.nn.modules.batchnorm.BatchNorm1d",
