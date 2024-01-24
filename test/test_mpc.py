@@ -25,7 +25,7 @@ from crypten.mpc.primitives import ArithmeticSharedTensor, BinarySharedTensor
 from test.multiprocess_test_case import get_random_test_tensor, MultiProcessTestCase
 
 
-class TestMPC(object):
+class TestMPC:
     """
     This class tests all functions of MPCTensor.
     """
@@ -366,7 +366,7 @@ class TestMPC(object):
             tensor1 = self._get_random_test_tensor(is_float=True).squeeze()
             tensor2 = self._get_random_test_tensor(is_float=True).squeeze()
             dot_reference = tensor1.dot(tensor2)
-            ger_reference = torch.ger(tensor1, tensor2)
+            ger_reference = torch.outer(tensor1, tensor2)
 
             tensor2 = tensor_type(tensor2)
 
@@ -2107,7 +2107,7 @@ class TestMPC(object):
         frac_zero = float((dropout_tensor == 0).sum()) / dropout_tensor.nelement()
         self.assertTrue(math.isclose(frac_zero, 0.4, rel_tol=1e-2, abs_tol=1e-2))
 
-    def _test_cache_save_load(self):
+    def _test_cache_save_load(self) -> None:
         # Determine expected filepaths
         provider = crypten.mpc.get_default_provider()
         request_path = provider._DEFAULT_CACHE_PATH + f"/request_cache-{self.rank}"
@@ -2184,7 +2184,7 @@ class TestMPC(object):
                         "Loaded tuple_cache tuple tensor incorrect",
                     )
 
-    def test_tuple_cache(self):
+    def test_tuple_cache(self) -> None:
         # Skip RSS setting since it does not generate tuples
         if cfg.mpc.protocol == "replicated":
             return
@@ -2274,46 +2274,46 @@ class TestMPC(object):
 
 # Run all unit tests with both TFP and TTP providers
 class TestTFP(MultiProcessTestCase, TestMPC):
-    def setUp(self):
+    def setUp(self) -> None:
         self._original_provider = cfg.mpc.provider
         crypten.CrypTensor.set_grad_enabled(False)
         cfg.mpc.provider = "TFP"
         super(TestTFP, self).setUp()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         cfg.mpc.provider = self._original_provider
         crypten.CrypTensor.set_grad_enabled(True)
         super(TestTFP, self).tearDown()
 
 
 class TestTTP(MultiProcessTestCase, TestMPC):
-    def setUp(self):
+    def setUp(self) -> None:
         self._original_provider = cfg.mpc.provider
         crypten.CrypTensor.set_grad_enabled(False)
         cfg.mpc.provider = "TTP"
         super(TestTTP, self).setUp()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         cfg.mpc.provider = self._original_provider
         crypten.CrypTensor.set_grad_enabled(True)
         super(TestTTP, self).tearDown()
 
 
 class Test3PC(MultiProcessTestCase, TestMPC):
-    def setUp(self):
+    def setUp(self) -> None:
         super(Test3PC, self).setUp(world_size=3)
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         super(Test3PC, self).tearDown()
 
 
 class TestRSS(MultiProcessTestCase, TestMPC):
-    def setUp(self):
+    def setUp(self) -> None:
         self._original_protocol = cfg.mpc.protocol
         cfg.mpc.protocol = "replicated"
         super(TestRSS, self).setUp(world_size=3)
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         cfg.mpc.protocol = self._original_protocol
         super(TestRSS, self).tearDown()
 
